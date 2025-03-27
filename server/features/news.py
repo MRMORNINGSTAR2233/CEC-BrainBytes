@@ -20,7 +20,7 @@ load_dotenv()
 # Initialize Groq LLM
 llm = ChatGroq(
     groq_api_key=os.getenv("GROQ_API_KEY"),
-    model_name="mixtral-8x7b-32768",
+    model_name="llama-3.2-3b-preview",
     temperature=0.7
 )
 
@@ -42,15 +42,21 @@ def fetch_news(query: str, days: int = 7) -> List[Dict]:
             # Format the results
             articles = []
             for result in news_results:
+                if not result or not isinstance(result, dict):
+                    continue
+                    
                 article = {
-                    "title": result.get("title", ""),
-                    "link": result.get("link", ""),
-                    "snippet": result.get("snippet", ""),
-                    "date": result.get("date", ""),
-                    "source": result.get("source", ""),
-                    "thumbnail": result.get("thumbnail", "")
+                    "title": result.get("title", "").strip(),
+                    "link": result.get("link", "").strip(),
+                    "snippet": result.get("snippet", "").strip(),
+                    "date": result.get("date", "").strip(),
+                    "source": result.get("source", "").strip(),
+                    "thumbnail": result.get("thumbnail", "").strip()
                 }
-                articles.append(article)
+                
+                # Only add articles with required fields
+                if article["title"] and article["link"]:
+                    articles.append(article)
             
             return articles
     except Exception as e:

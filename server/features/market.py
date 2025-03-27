@@ -17,7 +17,7 @@ load_dotenv()
 
 # Initialize the LLM with Groq
 llm = ChatGroq(
-    model_name="mixtral-8x7b-32768",  # Using Mixtral model for better performance
+    model_name="llama-3.2-3b-preview",  # Using Mixtral model for better performance
     temperature=0,
     max_tokens=32768,
     top_p=0.95,
@@ -248,11 +248,9 @@ def main():
     insights = get_market_insights(items)
     
     print("\nMarket Analysis Results:")
-    print("=" * 50)
-    print("\nMarket Data:")
-    print(json.dumps(insights["market_data"], indent=2))
-    print("\nRecommendations:")
-    print(insights["recommendations"])
+    print(json.dumps(insights, indent=2))
+    
+    return insights
 
 if __name__ == "__main__":
     main()

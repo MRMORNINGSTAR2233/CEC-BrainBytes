@@ -92,9 +92,9 @@ class AgriculturalAssistant:
         try:
             # Create a temporary file to store the audio
             with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
-                # Convert audio data to numpy array and save as WAV
-                audio_array, sample_rate = sf.read(audio_data)
-                sf.write(temp_file.name, audio_array, sample_rate)
+                # Write the audio data to the temporary file
+                temp_file.write(audio_data)
+                temp_file.flush()
                 
                 # Transcribe using Whisper with language detection
                 result = whisper_model(
